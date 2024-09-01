@@ -4,9 +4,8 @@ import Review from './review.model';
 
 export class Book extends Model {
   public id!: number;
-  public title!: string;
-  public author!: string;
-  public isBorrowed!: boolean; 
+  public name!: string;
+  public averageScore!: number;
 }
 
 Book.init({
@@ -22,11 +21,6 @@ Book.init({
   averageScore: {
     type: DataTypes.STRING(128),
     allowNull: true
-  },
-  isBorrowed: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false 
   }
 }, {
   sequelize,

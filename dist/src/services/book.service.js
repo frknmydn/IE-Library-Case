@@ -9,11 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBook = exports.updateBook = exports.getBookById = exports.createBook = exports.listBooks = void 0;
+exports.updateBook = exports.getBookById = exports.createBook = exports.listBooks = void 0;
 const book_model_1 = require("../models/book.model");
 const listBooks = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const books = yield book_model_1.Book.findAll();
+        const books = yield book_model_1.Book.findAll({
+            attributes: ['name', 'averageScore', 'id']
+        });
         return books;
     }
     catch (error) {
@@ -33,10 +35,11 @@ const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createBook = createBook;
-// Belirli bir kitap bilgisini getirme servisi
 const getBookById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const book = yield book_model_1.Book.findByPk(id);
+        const book = yield book_model_1.Book.findByPk(id, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+        });
         if (!book) {
             throw new Error('Book not found');
         }
@@ -63,17 +66,3 @@ const updateBook = (id, updateData) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.updateBook = updateBook;
-const deleteBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const book = yield book_model_1.Book.findByPk(id);
-        if (!book) {
-            throw new Error('Book not found');
-        }
-        yield book.destroy();
-    }
-    catch (error) {
-        console.error('Error while deleting book:', error);
-        throw new Error('Error deleting book');
-    }
-});
-exports.deleteBook = deleteBook;

@@ -6,7 +6,7 @@ export class Review extends Model {
   public bookId!: number;
   public userId!: number;
   public score!: number;
-  public status!: string; // Yeni status alanı
+  public status!: string;
 }
 
 Review.init({

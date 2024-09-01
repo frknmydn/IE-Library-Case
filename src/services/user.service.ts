@@ -1,35 +1,46 @@
 // src/services/user.service.ts
 import { User } from '../models/user.model';
-import { Book } from '../models/book.model';
 import sequelize from '../../config/database';
 import { QueryTypes } from 'sequelize';
 
+export interface UserBooks {
+    name: string;
+    averageScore: number | null;
+    score?: number | null;
+}
+
+export interface UserWithBooks {
+    userId: number;
+    name: string;
+    currentBorrowedBooks: UserBooks[];
+    pastBorrowedBooks: UserBooks[];
+}
+
 export const listUsers = async () => {
-    return await User.findAll();
+    return await User.findAll({
+        attributes: ['name', 'id']
+    });
 };
 
-export const getUserById = async (id: number) => {
+export const getUserById = async (id: number): Promise<UserWithBooks> => {
     const query = `
     SELECT 
         u.id AS "userId", 
-        u.name AS "userName",
+        u.name AS "name",
         COALESCE(
             JSON_AGG(
                 JSON_BUILD_OBJECT(
-                    'id', b.id,
                     'name', b.name,
-                    'averageScore', b."averageScore",
+                    'averageScore', b."averageScore"
                 )
             ) FILTER (WHERE r.status = 'borrowed'), '[]'
         ) AS "currentBorrowedBooks",
         COALESCE(
             JSON_AGG(
                 JSON_BUILD_OBJECT(
-                    'id', b.id,
                     'name', b.name,
                     'averageScore', b."averageScore",
-                    'score', r.score,
-                    'borrowedAt', r."createdAt"
+                    'score', r.score
                 )
             ) FILTER (WHERE r.status != 'borrowed'), '[]'
         ) AS "pastBorrowedBooks"
@@ -46,7 +57,7 @@ export const getUserById = async (id: number) => {
     `;
 
     try {
-        const results = await sequelize.query(query, {
+        const results: UserWithBooks[] = await sequelize.query(query, {
             replacements: { userId: id },
             type: QueryTypes.SELECT
         });
@@ -62,7 +73,9 @@ export const getUserById = async (id: number) => {
         throw error;
     }
 };
-export const createUser = async (userData: { name: string; email: string; }) => {
+
+
+export const createUser = async (userData: { name: string; }) => {
     return await User.create(userData);
 };
 

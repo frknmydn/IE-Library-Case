@@ -22,11 +22,6 @@ Book.init({
     averageScore: {
         type: sequelize_1.DataTypes.STRING(128),
         allowNull: true
-    },
-    isBorrowed: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
     }
 }, {
     sequelize: database_1.default,

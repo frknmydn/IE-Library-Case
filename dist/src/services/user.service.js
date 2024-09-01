@@ -18,32 +18,30 @@ const user_model_1 = require("../models/user.model");
 const database_1 = __importDefault(require("../../config/database"));
 const sequelize_1 = require("sequelize");
 const listUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield user_model_1.User.findAll();
+    return yield user_model_1.User.findAll({
+        attributes: ['name', 'id']
+    });
 });
 exports.listUsers = listUsers;
 const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const query = `
     SELECT 
         u.id AS "userId", 
-        u.name AS "userName",
+        u.name AS "name",
         COALESCE(
             JSON_AGG(
                 JSON_BUILD_OBJECT(
-                    'id', b.id,
                     'name', b.name,
-                    'averageScore', b."averageScore",
-                    'borrowedAt', r."createdAt"
+                    'averageScore', b."averageScore"
                 )
             ) FILTER (WHERE r.status = 'borrowed'), '[]'
         ) AS "currentBorrowedBooks",
         COALESCE(
             JSON_AGG(
                 JSON_BUILD_OBJECT(
-                    'id', b.id,
                     'name', b.name,
                     'averageScore', b."averageScore",
-                    'score', r.score,
-                    'borrowedAt', r."createdAt"
+                    'score', r.score
                 )
             ) FILTER (WHERE r.status != 'borrowed'), '[]'
         ) AS "pastBorrowedBooks"

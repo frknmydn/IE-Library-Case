@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   postgres:
     image: postgres:latest
@@ -22,18 +23,19 @@ services:
     depends_on:
       - postgres
     restart: always
-  # app:
-  #   build: .
-  #   command: npm start
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     DATABASE_HOST: postgres
-  #     DATABASE_USER: your_username
-  #     DATABASE_PASSWORD: your_password
-  #     DATABASE_NAME: library_management
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - .:/app
-  #   restart: always
+
+  app:
+    image: furkanmeydan/ie-library-case:latest
+    command: npm start
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_USER: your_username
+      DATABASE_PASSWORD: your_password
+      DATABASE_NAME: library_management
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    restart: always

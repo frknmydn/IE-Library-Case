@@ -43,7 +43,7 @@ export const createBook = async (req: Request, res: Response) => {
     
     try {
         const book = await bookService.createBook(req.body);
-        res.status(201).json(book);
+        res.status(201).json({ message: `Book created successfully` });
     } catch (error) {
         if (error instanceof Error) {
             res.status(500).json({ message: error.message });

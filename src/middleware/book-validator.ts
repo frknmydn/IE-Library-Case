@@ -5,5 +5,5 @@ export const createBookValidator = [
 ];
 
 export const returnBookValidator = [
-    body('score').isInt({ min: 1, max: 5 }).withMessage('Score must be an integer between 1 and 5')
+    body('score').isInt({ min: 1, max: 10 }).withMessage('Score must be an integer between 1 and 5')
 ];

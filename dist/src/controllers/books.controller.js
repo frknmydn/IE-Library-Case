@@ -78,7 +78,7 @@ const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     try {
         const book = yield bookService.createBook(req.body);
-        res.status(201).json(book);
+        res.status(201).json({ message: `Book created successfully` });
     }
     catch (error) {
         if (error instanceof Error) {

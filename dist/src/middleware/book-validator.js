@@ -6,5 +6,5 @@ exports.createBookValidator = [
     (0, express_validator_1.body)('name').isString().withMessage('name must be a string'),
 ];
 exports.returnBookValidator = [
-    (0, express_validator_1.body)('score').isInt({ min: 1, max: 5 }).withMessage('Score must be an integer between 1 and 5')
+    (0, express_validator_1.body)('score').isInt({ min: 1, max: 10 }).withMessage('Score must be an integer between 1 and 5')
 ];
